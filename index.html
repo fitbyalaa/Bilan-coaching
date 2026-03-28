@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilan Personnalisé – Coaching Alaattin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f2f2f2;
+    --card: #ffffff;
+    --border: #e0e0e0;
+    --accent: #ff6200;
+    --accent-dark: #cc4e00;
+    --text: #111111;
+    --muted: #aaa;
+    --muted2: #777;
+    --error: #ff3b3b;
+    --success: #ff6200;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* PROGRESS BAR */
+.progress-wrap {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+height: 3px;
+background: #e0e0e0;
+}
+.progress-bar {
+height: 100%;
+background: var(–accent);
+transition: width 0.4s ease;
+width: 0%;
+}
+
+/* HEADER */
+.hero {
+padding: 60px 24px 48px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+.hero::after {
+content: ‘’;
+position: absolute;
+bottom: 0; left: 50%;
+transform: translateX(-50%);
+width: 300px; height: 1px;
+background: linear-gradient(90deg, transparent, #ddd, transparent);
+}
+.hero-glow {
+position: absolute;
+top: -100px; left: 50%;
+transform: translateX(-50%);
+width: 500px; height: 300px;
+background: radial-gradient(ellipse, rgba(255,98,0,0.06) 0%, transparent 70%);
+pointer-events: none;
+}
+.hero-tag {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+background: rgba(255,98,0,0.08);
+border: 1px solid rgba(255,98,0,0.25);
+color: var(–accent);
+font-size: 11px;
+font-weight: 600;
+letter-spacing: 2px;
+text-transform: uppercase;
+padding: 6px 14px;
+border-radius: 100px;
+margin-bottom: 24px;
+}
+.hero h1 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(42px, 10vw, 80px);
+line-height: 0.95;
+letter-spacing: 1px;
+margin-bottom: 20px;
+color: #111;
+}
+.hero h1 .line2 { color: var(–accent); }
+.hero p {
+color: var(–muted2);
+font-size: 15px;
+max-width: 440px;
+margin: 0 auto;
+line-height: 1.7;
+}
+
+/* FORM WRAPPER */
+.form-wrap {
+max-width: 580px;
+margin: 0 auto;
+padding: 40px 20px 100px;
+}
+
+/* SECTION LABEL */
+.section-label {
+display: flex;
+align-items: center;
+gap: 12px;
+margin: 48px 0 24px;
+}
+.section-label .dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: var(–accent);
+flex-shrink: 0;
+}
+.section-label span {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 13px;
+letter-spacing: 3px;
+color: var(–muted2);
+text-transform: uppercase;
+}
+.section-label::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: #ddd;
+}
+
+/* FIELD */
+.field {
+margin-bottom: 20px;
+}
+.field label {
+display: block;
+font-size: 14px;
+font-weight: 500;
+margin-bottom: 10px;
+color: var(–text);
+line-height: 1.4;
+}
+.field label .req { color: var(–accent); margin-left: 2px; }
+
+/* TEXT INPUTS */
+.field input[type=“text”],
+.field input[type=“number”],
+.field textarea {
+width: 100%;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 14px 16px;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 15px;
+outline: none;
+transition: border-color 0.2s, box-shadow 0.2s;
+-webkit-appearance: none;
+}
+.field input[type=“text”]:focus,
+.field input[type=“number”]:focus,
+.field textarea:focus {
+border-color: var(–accent);
+box-shadow: 0 0 0 3px rgba(255,98,0,0.12);
+}
+.field textarea {
+resize: vertical;
+min-height: 100px;
+line-height: 1.6;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: var(–muted); }
+
+/* GRID 2 COL */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 420px) { .grid2 { grid-template-columns: 1fr; } }
+
+/* RADIO / CHECKBOX */
+.options-list {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.options-list.inline {
+flex-direction: row;
+flex-wrap: wrap;
+gap: 8px;
+}
+.opt-item {
+display: flex;
+align-items: center;
+gap: 12px;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 13px 16px;
+cursor: pointer;
+transition: border-color 0.2s, background 0.2s;
+user-select: none;
+-webkit-tap-highlight-color: transparent;
+}
+.opt-item:hover { border-color: #333; }
+.opt-item.selected {
+border-color: var(–accent);
+background: rgba(255,98,0,0.08);
+}
+.opt-item input { display: none; }
+.opt-dot {
+width: 18px; height: 18px;
+border-radius: 50%;
+border: 2px solid var(–border);
+flex-shrink: 0;
+display: flex; align-items: center; justify-content: center;
+transition: border-color 0.2s, background 0.2s;
+}
+.opt-item.selected .opt-dot {
+border-color: var(–accent);
+background: var(–accent);
+}
+.opt-dot::after {
+content: ‘’;
+width: 6px; height: 6px;
+border-radius: 50%;
+background: #000;
+opacity: 0;
+transition: opacity 0.2s;
+}
+.opt-item.selected .opt-dot::after { opacity: 1; background: #fff; }
+.opt-check {
+width: 18px; height: 18px;
+border-radius: 5px;
+border: 2px solid var(–border);
+flex-shrink: 0;
+display: flex; align-items: center; justify-content: center;
+transition: border-color 0.2s, background 0.2s;
+font-size: 11px;
+color: #000;
+}
+.opt-item.selected .opt-check {
+border-color: var(–accent);
+background: var(–accent);
+color: #fff;
+}
+.opt-label {
+font-size: 14px;
+color: var(–text);
+}
+
+/* INLINE OPTS (pill style) */
+.options-list.inline .opt-item {
+padding: 10px 16px;
+border-radius: 100px;
+flex: none;
+}
+
+/* SCALE */
+.scale-wrap { display: flex; flex-direction: column; gap: 12px; }
+.scale-row {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.scale-row input[type=“range”] {
+flex: 1;
+-webkit-appearance: none;
+appearance: none;
+height: 4px;
+background: #ddd;
+border-radius: 2px;
+outline: none;
+}
+.scale-row input[type=“range”]::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 22px; height: 22px;
+border-radius: 50%;
+background: var(–accent);
+cursor: pointer;
+border: 3px solid #000;
+box-shadow: 0 0 0 2px var(–accent);
+}
+.scale-labels {
+display: flex;
+justify-content: space-between;
+font-size: 11px;
+color: var(–muted);
+}
+.scale-value {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 28px;
+color: var(–accent);
+text-align: center;
+line-height: 1;
+}
+
+/* FIELD DESC */
+.field-desc {
+font-size: 12px;
+color: var(–muted);
+margin-top: 8px;
+line-height: 1.5;
+font-style: italic;
+}
+
+/* SUBMIT */
+.submit-wrap {
+margin-top: 48px;
+text-align: center;
+}
+.submit-btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+background: var(–accent);
+color: #fff;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 20px;
+letter-spacing: 2px;
+padding: 18px 48px;
+border-radius: 100px;
+border: none;
+cursor: pointer;
+width: 100%;
+max-width: 400px;
+transition: transform 0.15s, box-shadow 0.15s;
+-webkit-tap-highlight-color: transparent;
+}
+.submit-btn:active { transform: scale(0.97); }
+.submit-btn:hover {
+box-shadow: 0 0 40px rgba(255,98,0,0.4);
+}
+.submit-note {
+color: var(–muted);
+font-size: 12px;
+margin-top: 14px;
+line-height: 1.5;
+}
+
+/* SUCCESS */
+.success-screen {
+display: none;
+min-height: 100vh;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+text-align: center;
+padding: 40px 24px;
+}
+.success-screen.show { display: flex; }
+.success-icon {
+width: 80px; height: 80px;
+border-radius: 50%;
+background: rgba(78,255,142,0.1);
+border: 2px solid var(–accent);
+display: flex; align-items: center; justify-content: center;
+font-size: 36px;
+margin-bottom: 28px;
+animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes popIn {
+from { transform: scale(0); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+.success-screen h2 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 42px;
+margin-bottom: 16px;
+color: var(–accent);
+}
+.success-screen p {
+color: var(–muted2);
+font-size: 15px;
+max-width: 360px;
+line-height: 1.7;
+}
+
+/* REQUIRED ERROR */
+.field.error input,
+.field.error textarea {
+border-color: var(–error);
+}
+.error-msg {
+color: var(–error);
+font-size: 12px;
+margin-top: 6px;
+display: none;
+}
+.field.error .error-msg { display: block; }
+
+/* ANIMATIONS */
+.field {
+animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(16px); }
+to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- HERO -->
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">💪 Coaching Personnalisé</div>
+  <h1>BILAN<br><span class="line2">ALAATTIN</span></h1>
+  <p>Ce questionnaire me permet de comprendre ton profil et de te proposer un accompagnement sur-mesure.<br><strong style="color:var(--text)">Réponds honnêtement.</strong></p>
+</div>
+
+<!-- FORM -->
+
+<div class="form-wrap" id="formWrap">
+<form id="bilanForm" novalidate>
+
+  <!-- S1 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 1 — Informations</span></div>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Prénom <span class="req">*</span></label>
+      <input type="text" name="prenom" placeholder="Ton prénom" required>
+      <div class="error-msg">Champ requis</div>
+    </div>
+    <div class="field">
+      <label>Nom <span class="req">*</span></label>
+      <input type="text" name="nom" placeholder="Ton nom" required>
+      <div class="error-msg">Champ requis</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Âge</label>
+      <input type="number" name="age" placeholder="Ex: 24" min="10" max="99">
+    </div>
+    <div class="field">
+      <label>Profession</label>
+      <input type="text" name="profession" placeholder="Ex: Commercial">
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Taille (cm)</label>
+      <input type="number" name="taille" placeholder="Ex: 178">
+    </div>
+    <div class="field">
+      <label>Poids (kg)</label>
+      <input type="number" name="poids" placeholder="Ex: 82">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Niveau d'activité au travail</label>
+    <div class="options-list inline" data-name="activite_travail" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="activite_travail" value="Sédentaire"><div class="opt-dot"></div><span class="opt-label">Sédentaire</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="activite_travail" value="Actif"><div class="opt-dot"></div><span class="opt-label">Actif</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="activite_travail" value="Très actif"><div class="opt-dot"></div><span class="opt-label">Très actif</span></label>
+    </div>
+  </div>
+
+  <!-- S2 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 2 — Objectifs</span></div>
+
+  <div class="field">
+    <label>Objectif principal <span class="req">*</span></label>
+    <div class="options-list" data-name="objectif" data-type="radio" data-required="true">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="objectif" value="Perte de poids"><div class="opt-dot"></div><span class="opt-label">⚖️ Perte de poids</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="objectif" value="Prise de masse"><div class="opt-dot"></div><span class="opt-label">💪 Prise de masse</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="objectif" value="Remise en forme"><div class="opt-dot"></div><span class="opt-label">🔄 Remise en forme</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="objectif" value="Performance"><div class="opt-dot"></div><span class="opt-label">🏆 Performance</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="objectif" value="Autre"><div class="opt-dot"></div><span class="opt-label">Autre</span></label>
+    </div>
+    <div class="error-msg">Choisis un objectif</div>
+  </div>
+
+  <div class="field">
+    <label>Combien de kilos souhaites-tu perdre / prendre ?</label>
+    <input type="text" name="kilos" placeholder="Ex: -8 kg">
+  </div>
+
+  <div class="field">
+    <label>As-tu une échéance ?</label>
+    <textarea name="echeance" placeholder="Ex: Mariage en juillet, vacances en août..."></textarea>
+  </div>
+
+  <div class="field">
+    <label>Motivation (1 à 10) <span class="req">*</span></label>
+    <div class="scale-wrap">
+      <div class="scale-value" id="scaleVal">5</div>
+      <div class="scale-row">
+        <input type="range" name="motivation" min="1" max="10" value="5" oninput="document.getElementById('scaleVal').textContent=this.value">
+      </div>
+      <div class="scale-labels"><span>1 – Faible</span><span>10 – Détermination totale</span></div>
+    </div>
+  </div>
+
+  <!-- S3 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 3 — Expérience sportive</span></div>
+
+  <div class="field">
+    <label>As-tu déjà fait du sport ?</label>
+    <div class="options-list inline" data-name="sport_deja" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="sport_deja" value="Oui"><div class="opt-dot"></div><span class="opt-label">Oui</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="sport_deja" value="Non"><div class="opt-dot"></div><span class="opt-label">Non</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Depuis combien de temps ?</label>
+    <input type="text" name="sport_duree" placeholder="Ex: 2 ans, quelques mois...">
+  </div>
+
+  <div class="field">
+    <label>Fréquence actuelle</label>
+    <div class="options-list inline" data-name="frequence" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="frequence" value="0"><div class="opt-dot"></div><span class="opt-label">0</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="frequence" value="1-2 fois/semaine"><div class="opt-dot"></div><span class="opt-label">1-2x/sem</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="frequence" value="3-4 fois/semaine"><div class="opt-dot"></div><span class="opt-label">3-4x/sem</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="frequence" value="5 fois et +"><div class="opt-dot"></div><span class="opt-label">5x+</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>As-tu déjà eu un coach ?</label>
+    <div class="options-list inline" data-name="coach_deja" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="coach_deja" value="Oui"><div class="opt-dot"></div><span class="opt-label">Oui</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="coach_deja" value="Non"><div class="opt-dot"></div><span class="opt-label">Non</span></label>
+    </div>
+  </div>
+
+  <!-- S4 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 4 — Santé</span></div>
+
+  <div class="field">
+    <label>As-tu des douleurs ou blessures ?</label>
+    <textarea name="blessures" placeholder="Décris tes douleurs ou blessures..."></textarea>
+  </div>
+
+  <div class="field">
+    <label>Problèmes de santé ?</label>
+    <textarea name="sante" placeholder="Diabète, hypertension, etc."></textarea>
+  </div>
+
+  <div class="field">
+    <label>Prends-tu des médicaments ?</label>
+    <div class="options-list inline" data-name="medicaments" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="medicaments" value="Oui"><div class="opt-dot"></div><span class="opt-label">Oui</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="medicaments" value="Non"><div class="opt-dot"></div><span class="opt-label">Non</span></label>
+    </div>
+  </div>
+
+  <!-- S5 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 5 — Alimentation</span></div>
+
+  <div class="field">
+    <label>Comment est ton alimentation ?</label>
+    <div class="options-list" data-name="alimentation" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="alimentation" value="Très mauvaise"><div class="opt-dot"></div><span class="opt-label">😬 Très mauvaise</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="alimentation" value="Moyenne"><div class="opt-dot"></div><span class="opt-label">😐 Moyenne</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="alimentation" value="Correcte"><div class="opt-dot"></div><span class="opt-label">🙂 Correcte</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="alimentation" value="Très bonne"><div class="opt-dot"></div><span class="opt-label">😎 Très bonne</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Combien de repas par jour ?</label>
+    <input type="number" name="repas" placeholder="Ex: 3" min="1" max="10">
+  </div>
+
+  <div class="field">
+    <label>Restrictions alimentaires</label>
+    <div class="options-list inline" data-name="restrictions" data-type="checkbox">
+      <label class="opt-item" onclick="selectCheck(this)"><input type="checkbox" name="restrictions" value="Végétarien"><div class="opt-check">✓</div><span class="opt-label">Végétarien</span></label>
+      <label class="opt-item" onclick="selectCheck(this)"><input type="checkbox" name="restrictions" value="Halal"><div class="opt-check">✓</div><span class="opt-label">Halal</span></label>
+      <label class="opt-item" onclick="selectCheck(this)"><input type="checkbox" name="restrictions" value="Allergies"><div class="opt-check">✓</div><span class="opt-label">Allergies</span></label>
+      <label class="opt-item" onclick="selectCheck(this)"><input type="checkbox" name="restrictions" value="Aucune"><div class="opt-check">✓</div><span class="opt-label">Aucune</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Grignotage ?</label>
+    <div class="options-list inline" data-name="grignotage" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="grignotage" value="Oui"><div class="opt-dot"></div><span class="opt-label">Oui</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="grignotage" value="Non"><div class="opt-dot"></div><span class="opt-label">Non</span></label>
+    </div>
+  </div>
+
+  <!-- S6 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 6 — Organisation</span></div>
+
+  <div class="field">
+    <label>Combien de séances par semaine peux-tu faire ?</label>
+    <div class="options-list inline" data-name="seances" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="seances" value="1-2"><div class="opt-dot"></div><span class="opt-label">1-2</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="seances" value="3-4"><div class="opt-dot"></div><span class="opt-label">3-4</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="seances" value="5 et +"><div class="opt-dot"></div><span class="opt-label">5+</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Type de coaching souhaité</label>
+    <div class="options-list" data-name="type_coaching" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="type_coaching" value="En salle"><div class="opt-dot"></div><span class="opt-label">🏋️ En salle</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="type_coaching" value="À distance"><div class="opt-dot"></div><span class="opt-label">📱 À distance</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="type_coaching" value="Programme seul"><div class="opt-dot"></div><span class="opt-label">📋 Programme seul</span></label>
+    </div>
+  </div>
+
+  <!-- S7 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 7 — Engagement</span></div>
+
+  <div class="field">
+    <label>Es-tu prêt à suivre un programme strict ?</label>
+    <div class="options-list inline" data-name="programme_strict" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="programme_strict" value="Oui"><div class="opt-dot"></div><span class="opt-label">Oui 💪</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="programme_strict" value="Non"><div class="opt-dot"></div><span class="opt-label">Non</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Es-tu prêt à suivre un plan alimentaire ?</label>
+    <div class="options-list inline" data-name="plan_alim" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="plan_alim" value="Oui"><div class="opt-dot"></div><span class="opt-label">Oui 🥗</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="plan_alim" value="Non"><div class="opt-dot"></div><span class="opt-label">Non</span></label>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Type de suivi souhaité</label>
+    <div class="options-list" data-name="suivi" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="suivi" value="Basique"><div class="opt-dot"></div><span class="opt-label">Basique</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="suivi" value="Intermédiaire"><div class="opt-dot"></div><span class="opt-label">Intermédiaire</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="suivi" value="Premium"><div class="opt-dot"></div><span class="opt-label">⭐ Premium</span></label>
+    </div>
+  </div>
+
+  <!-- S8 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 8 — Budget</span></div>
+
+  <div class="field">
+    <label>Quel budget es-tu prêt à investir par mois ? <span class="req">*</span></label>
+    <div class="field-desc">Un investissement minimum est nécessaire pour garantir des résultats concrets et un suivi de qualité.</div>
+    <div class="options-list" style="margin-top:12px" data-name="budget" data-type="radio" data-required="true">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="budget" value="100-150€"><div class="opt-dot"></div><span class="opt-label">💰 100 – 150€ / mois</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="budget" value="150-250€"><div class="opt-dot"></div><span class="opt-label">💰💰 150 – 250€ / mois</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="budget" value="250-400€"><div class="opt-dot"></div><span class="opt-label">💰💰💰 250 – 400€ / mois</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="budget" value="400€+"><div class="opt-dot"></div><span class="opt-label">🔥 400€ et + / mois</span></label>
+    </div>
+    <div class="error-msg">Choisis un budget</div>
+  </div>
+
+  <!-- S9 -->
+
+  <div class="section-label"><div class="dot"></div><span>Section 9 — Mental</span></div>
+
+  <div class="field">
+    <label>Pourquoi n'as-tu pas encore atteint ton objectif ?</label>
+    <textarea name="pourquoi_pas" placeholder="Sois honnête avec toi-même..."></textarea>
+  </div>
+
+  <div class="field">
+    <label>Qu'attends-tu de moi en tant que coach ?</label>
+    <textarea name="attentes" placeholder="Tes attentes, tes besoins..."></textarea>
+  </div>
+
+  <div class="field">
+    <label>Es-tu prêt à sortir de ta zone de confort ?</label>
+    <div class="options-list inline" data-name="zone_confort" data-type="radio">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="zone_confort" value="Oui"><div class="opt-dot"></div><span class="opt-label">Oui, à 100% 🔥</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="zone_confort" value="Non"><div class="opt-dot"></div><span class="opt-label">Non</span></label>
+    </div>
+  </div>
+
+  <!-- BONUS -->
+
+  <div class="section-label"><div class="dot" style="background:#ff6b35"></div><span>🔥 Dernière question</span></div>
+
+  <div class="field">
+    <label>Souhaites-tu être recontacté rapidement avec une offre adaptée ? <span class="req">*</span></label>
+    <div class="options-list" data-name="recontact" data-type="radio" data-required="true">
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="recontact" value="Oui"><div class="opt-dot"></div><span class="opt-label">✅ Oui, je veux être recontacté !</span></label>
+      <label class="opt-item" onclick="selectOpt(this)"><input type="radio" name="recontact" value="Non"><div class="opt-dot"></div><span class="opt-label">Non merci</span></label>
+    </div>
+    <div class="error-msg">Réponds à cette question</div>
+  </div>
+
+  <!-- SUBMIT -->
+
+  <div class="submit-wrap">
+    <button type="submit" class="submit-btn">ENVOYER MON BILAN 🚀</button>
+    <div class="submit-note">Tes réponses sont confidentielles.<br>Je te recontacte dans les 24h. 💪</div>
+  </div>
+
+</form>
+</div>
+
+<!-- SUCCESS -->
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✅</div>
+  <h2>C'EST ENVOYÉ !</h2>
+  <p>Merci pour ta confiance. J'analyse ton bilan et je te recontacte très rapidement avec une offre personnalisée. 💪</p>
+</div>
+
+<script>
+// Progress bar
+function updateProgress() {
+  const fields = document.querySelectorAll('input[required], [data-required="true"]');
+  const form = document.getElementById('bilanForm');
+  const allInputs = form.querySelectorAll('input, textarea, select');
+  let filled = 0, total = 0;
+  allInputs.forEach(i => {
+    if (i.type === 'radio' || i.type === 'checkbox') return;
+    if (i.type === 'range') { filled++; total++; return; }
+    total++;
+    if (i.value.trim()) filled++;
+  });
+  const radioGroups = new Set();
+  form.querySelectorAll('input[type="radio"]').forEach(r => radioGroups.add(r.name));
+  radioGroups.forEach(name => {
+    total++;
+    if (form.querySelector(`input[name="${name}"]:checked`)) filled++;
+  });
+  const pct = total ? Math.round((filled / total) * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// Radio select
+function selectOpt(label) {
+  const group = label.closest('.options-list');
+  group.querySelectorAll('.opt-item').forEach(i => i.classList.remove('selected'));
+  label.classList.add('selected');
+  label.querySelector('input').checked = true;
+  updateProgress();
+}
+
+// Checkbox select
+function selectCheck(label) {
+  label.classList.toggle('selected');
+  label.querySelector('input').checked = label.classList.contains('selected');
+  updateProgress();
+}
+
+// Range update
+document.querySelector('input[type="range"]').addEventListener('input', updateProgress);
+document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => {
+  el.addEventListener('input', updateProgress);
+});
+
+// Submit
+document.getElementById('bilanForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let valid = true;
+
+  // Required text fields
+  document.querySelectorAll('input[required]').forEach(inp => {
+    const field = inp.closest('.field');
+    if (!inp.value.trim()) {
+      field.classList.add('error');
+      valid = false;
+    } else {
+      field.classList.remove('error');
+    }
+  });
+
+  // Required radio groups
+  document.querySelectorAll('[data-required="true"]').forEach(group => {
+    const name = group.dataset.name;
+    const checked = group.querySelector('input:checked');
+    const field = group.closest('.field');
+    if (!checked) {
+      field.classList.add('error');
+      valid = false;
+    } else {
+      field.classList.remove('error');
+    }
+  });
+
+  if (!valid) {
+    const firstError = document.querySelector('.field.error');
+    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Collect data
+  const data = new FormData(this);
+  const result = {};
+  data.forEach((val, key) => {
+    if (result[key]) {
+      result[key] = [].concat(result[key], val);
+    } else {
+      result[key] = val;
+    }
+  });
+  console.log('Bilan soumis:', result);
+
+  // Show success
+  document.getElementById('formWrap').style.display = 'none';
+  const s = document.getElementById('successScreen');
+  s.classList.add('show');
+  document.getElementById('progressBar').style.width = '100%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+updateProgress();
+</script>
+
+</body>
+</html>
